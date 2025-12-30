@@ -1,7 +1,7 @@
 import AuthorImage from '../AuthorImage/AuthorImage';
 import './QuoteCard.css';
 
-export default function QuoteCard({ quote, isAnimating, animationState }) {
+export default function QuoteCard({ quote, animationState }) {
   if (!quote) {
     return (
       <div className="quote-card quote-card--empty">
