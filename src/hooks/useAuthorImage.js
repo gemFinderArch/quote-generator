@@ -1,66 +1,61 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { fetchAuthorImage } from '../utils/wikipediaApi';
 
 export function useAuthorImage(authorName) {
-  const [imageUrl, setImageUrl] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
+  const [state, setState] = useState({
+    imageUrl: null,
+    isLoading: !!authorName,
+    hasError: !authorName,
+  });
+
+  const isMounted = useRef(true);
 
   useEffect(() => {
+    isMounted.current = true;
+
     if (!authorName) {
-      setIsLoading(false);
-      setHasError(true);
       return;
     }
 
     let cancelled = false;
 
     async function loadImage() {
-      setIsLoading(true);
-      setHasError(false);
-
       try {
         const url = await fetchAuthorImage(authorName);
 
-        if (cancelled) return;
+        if (cancelled || !isMounted.current) return;
 
         if (url) {
-          // Preload the image to ensure smooth reveal
           const img = new Image();
           img.onload = () => {
-            if (!cancelled) {
-              setImageUrl(url);
-              setIsLoading(false);
+            if (!cancelled && isMounted.current) {
+              setState({ imageUrl: url, isLoading: false, hasError: false });
             }
           };
           img.onerror = () => {
-            if (!cancelled) {
-              setImageUrl(null);
-              setHasError(true);
-              setIsLoading(false);
+            if (!cancelled && isMounted.current) {
+              setState({ imageUrl: null, isLoading: false, hasError: true });
             }
           };
           img.src = url;
         } else {
-          setImageUrl(null);
-          setHasError(true);
-          setIsLoading(false);
+          setState({ imageUrl: null, isLoading: false, hasError: true });
         }
       } catch {
-        if (!cancelled) {
-          setImageUrl(null);
-          setHasError(true);
-          setIsLoading(false);
+        if (!cancelled && isMounted.current) {
+          setState({ imageUrl: null, isLoading: false, hasError: true });
         }
       }
     }
 
+    setState({ imageUrl: null, isLoading: true, hasError: false });
     loadImage();
 
     return () => {
       cancelled = true;
+      isMounted.current = false;
     };
   }, [authorName]);
 
-  return { imageUrl, isLoading, hasError };
+  return state;
 }
