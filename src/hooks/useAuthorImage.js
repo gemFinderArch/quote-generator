@@ -1,14 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { fetchAuthorImage } from '../utils/wikipediaApi';
 
 export function useAuthorImage(authorName) {
-  const [state, setState] = useState({
+  // Compute initial state based on authorName
+  const initialState = useMemo(() => ({
     imageUrl: null,
     isLoading: !!authorName,
     hasError: !authorName,
-  });
+    forAuthor: authorName,
+  }), [authorName]);
 
+  const [state, setState] = useState(initialState);
   const isMounted = useRef(true);
+
+  // Reset state when authorName changes
+  const currentState = state.forAuthor === authorName ? state : initialState;
 
   useEffect(() => {
     isMounted.current = true;
@@ -29,26 +35,45 @@ export function useAuthorImage(authorName) {
           const img = new Image();
           img.onload = () => {
             if (!cancelled && isMounted.current) {
-              setState({ imageUrl: url, isLoading: false, hasError: false });
+              setState({
+                imageUrl: url,
+                isLoading: false,
+                hasError: false,
+                forAuthor: authorName,
+              });
             }
           };
           img.onerror = () => {
             if (!cancelled && isMounted.current) {
-              setState({ imageUrl: null, isLoading: false, hasError: true });
+              setState({
+                imageUrl: null,
+                isLoading: false,
+                hasError: true,
+                forAuthor: authorName,
+              });
             }
           };
           img.src = url;
         } else {
-          setState({ imageUrl: null, isLoading: false, hasError: true });
+          setState({
+            imageUrl: null,
+            isLoading: false,
+            hasError: true,
+            forAuthor: authorName,
+          });
         }
       } catch {
         if (!cancelled && isMounted.current) {
-          setState({ imageUrl: null, isLoading: false, hasError: true });
+          setState({
+            imageUrl: null,
+            isLoading: false,
+            hasError: true,
+            forAuthor: authorName,
+          });
         }
       }
     }
 
-    setState({ imageUrl: null, isLoading: true, hasError: false });
     loadImage();
 
     return () => {
@@ -57,5 +82,9 @@ export function useAuthorImage(authorName) {
     };
   }, [authorName]);
 
-  return state;
+  return {
+    imageUrl: currentState.imageUrl,
+    isLoading: currentState.isLoading,
+    hasError: currentState.hasError,
+  };
 }
