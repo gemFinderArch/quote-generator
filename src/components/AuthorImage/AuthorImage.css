@@ -5,25 +5,11 @@
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
-  box-shadow: var(--shadow-md),
-              0 0 0 1px var(--glass-border);
 }
 
 .author-image--loading {
-  background: var(--bg-hover);
-}
-
-.shimmer {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(139, 124, 247, 0.1) 50%,
-    transparent 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
+  /* Invisible during loading - no frame visible */
+  opacity: 0;
 }
 
 .author-image--fallback {
@@ -32,6 +18,9 @@
   align-items: center;
   justify-content: center;
   border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md),
+              0 0 0 1px var(--glass-border);
+  animation: fadeIn var(--duration-slow) var(--ease-out);
 }
 
 .initials {
@@ -42,7 +31,20 @@
 }
 
 .author-image--loaded {
-  animation: imageReveal var(--duration-slow) var(--ease-out);
+  box-shadow: var(--shadow-md),
+              0 0 0 1px var(--glass-border);
+  animation: imageFadeIn 600ms var(--ease-out);
+}
+
+@keyframes imageFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .author-img {

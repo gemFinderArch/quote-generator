@@ -1,4 +1,5 @@
 import AuthorImage from '../AuthorImage/AuthorImage';
+import { getAuthorYears } from '../../utils/authorYears';
 import './QuoteCard.css';
 
 export default function QuoteCard({ quote, animationState }) {
@@ -18,6 +19,8 @@ export default function QuoteCard({ quote, animationState }) {
     );
   }
 
+  const authorYears = getAuthorYears(quote.author);
+
   return (
     <div className={`quote-card ${animationState === 'exit' ? 'quote-card--exit' : 'quote-card--enter'}`}>
       <div className="quote-content">
@@ -27,6 +30,9 @@ export default function QuoteCard({ quote, animationState }) {
           <p className="quote-text">{quote.text}</p>
           <footer className="quote-footer">
             <cite className="quote-author">{quote.author}</cite>
+            {authorYears && (
+              <span className="quote-years">{authorYears}</span>
+            )}
           </footer>
         </blockquote>
       </div>
