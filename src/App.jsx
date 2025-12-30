@@ -1,94 +1,89 @@
-import { useState, useCallback } from 'react'
-import { quotes } from './quotes'
-import './App.css'
+import { useState, useCallback } from 'react';
+import { quotes } from './quotes';
+import BackgroundEffects from './components/BackgroundEffects/BackgroundEffects';
+import Header from './components/Header/Header';
+import QuoteCard from './components/QuoteCard/QuoteCard';
+import Button from './components/Button/Button';
+import './App.css';
 
 function App() {
-  const [currentQuote, setCurrentQuote] = useState(null)
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [quoteHistory, setQuoteHistory] = useState([])
+  const [currentQuote, setCurrentQuote] = useState(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [animationState, setAnimationState] = useState('enter');
+  const [quoteHistory, setQuoteHistory] = useState([]);
 
   const getRandomQuote = useCallback(() => {
-    // Filter out recently shown quotes to avoid repetition
     const availableQuotes = quotes.filter(
       (q) => !quoteHistory.includes(q.text)
-    )
+    );
 
-    // Reset history if we've shown all quotes
-    const quotesToChooseFrom = availableQuotes.length > 0 ? availableQuotes : quotes
-
-    const randomIndex = Math.floor(Math.random() * quotesToChooseFrom.length)
-    return quotesToChooseFrom[randomIndex]
-  }, [quoteHistory])
+    const quotesToChooseFrom = availableQuotes.length > 0 ? availableQuotes : quotes;
+    const randomIndex = Math.floor(Math.random() * quotesToChooseFrom.length);
+    return quotesToChooseFrom[randomIndex];
+  }, [quoteHistory]);
 
   const handleNewQuote = () => {
-    setIsAnimating(true)
+    if (isAnimating) return;
 
-    // Small delay for exit animation
-    setTimeout(() => {
-      const newQuote = getRandomQuote()
-      setCurrentQuote(newQuote)
+    setIsAnimating(true);
 
-      // Keep track of last 20 quotes to avoid repetition
-      setQuoteHistory((prev) => {
-        const updated = [...prev, newQuote.text]
-        return updated.slice(-20)
-      })
-
-      // Reset animation state after enter animation
+    if (currentQuote) {
+      setAnimationState('exit');
       setTimeout(() => {
-        setIsAnimating(false)
-      }, 50)
-    }, currentQuote ? 300 : 0)
-  }
+        const newQuote = getRandomQuote();
+        setCurrentQuote(newQuote);
+        setAnimationState('enter');
+
+        setQuoteHistory((prev) => {
+          const updated = [...prev, newQuote.text];
+          return updated.slice(-20);
+        });
+
+        setTimeout(() => setIsAnimating(false), 100);
+      }, 300);
+    } else {
+      const newQuote = getRandomQuote();
+      setCurrentQuote(newQuote);
+      setAnimationState('enter');
+
+      setQuoteHistory([newQuote.text]);
+      setTimeout(() => setIsAnimating(false), 100);
+    }
+  };
 
   return (
     <div className="app">
-      <div className="background-shapes">
-        <div className="shape shape-1"></div>
-        <div className="shape shape-2"></div>
-        <div className="shape shape-3"></div>
-      </div>
+      <BackgroundEffects />
 
-      <div className="container">
-        <header className="header">
-          <h1 className="title">Daily Wisdom</h1>
-          <p className="subtitle">Timeless quotes from great minds</p>
-        </header>
+      <main className="main">
+        <Header />
 
-        <div className="quote-container">
-          {currentQuote ? (
-            <div className={`quote-card ${isAnimating ? 'exit' : 'enter'}`}>
-              <div className="quote-icon">"</div>
-              <blockquote className="quote-text">
-                {currentQuote.text}
-              </blockquote>
-              <cite className="quote-author">— {currentQuote.author}</cite>
-            </div>
-          ) : (
-            <div className="empty-state">
-              <div className="empty-icon">✨</div>
-              <p>Press the button to discover wisdom</p>
-            </div>
-          )}
+        <section className="quote-section">
+          <QuoteCard
+            quote={currentQuote}
+            isAnimating={isAnimating}
+            animationState={animationState}
+          />
+        </section>
+
+        <div className="action-section">
+          <Button
+            onClick={handleNewQuote}
+            disabled={isAnimating}
+            isLoading={isAnimating}
+          >
+            {currentQuote ? 'New Quote' : 'Inspire Me'}
+          </Button>
         </div>
 
-        <button
-          className={`inspire-button ${isAnimating ? 'pulse' : ''}`}
-          onClick={handleNewQuote}
-          disabled={isAnimating}
-        >
-          <span className="button-text">
-            {currentQuote ? 'New Quote' : 'Inspire Me'}
-          </span>
-          <span className="button-icon">→</span>
-        </button>
-
         <footer className="footer">
-          <p>{quotes.length} quotes from history's greatest minds</p>
+          <p className="footer-text">
+            {quotes.length} quotes from history's greatest minds
+          </p>
         </footer>
-      </div>
+      </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,0 +1,134 @@
+.quote-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  width: 100%;
+  max-width: 600px;
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  backdrop-filter: blur(10px);
+}
+
+.quote-card--enter {
+  animation: quoteEnter var(--duration-slow) var(--ease-out);
+}
+
+.quote-card--exit {
+  animation: quoteExit 300ms var(--ease-out);
+}
+
+.quote-card--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  margin-bottom: var(--space-md);
+  animation: gentlePulse 3s ease-in-out infinite;
+}
+
+.empty-icon svg {
+  stroke: var(--accent-primary);
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+.quote-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.quote-block {
+  margin: 0;
+  text-align: center;
+}
+
+.quote-text {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-lg);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.quote-text::before {
+  content: '"';
+  color: var(--accent-primary);
+  opacity: 0.5;
+}
+
+.quote-text::after {
+  content: '"';
+  color: var(--accent-primary);
+  opacity: 0.5;
+}
+
+.quote-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.quote-author {
+  font-style: normal;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--accent-gold);
+  letter-spacing: 0.01em;
+}
+
+.quote-author::before {
+  content: '— ';
+  color: var(--text-muted);
+}
+
+@media (min-width: 640px) {
+  .quote-card {
+    padding: var(--space-xl);
+    border-radius: var(--radius-xl);
+  }
+
+  .quote-content {
+    gap: var(--space-xl);
+  }
+
+  .quote-text {
+    font-size: 1.375rem;
+  }
+
+  .quote-author {
+    font-size: 1rem;
+  }
+
+  .empty-text {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .quote-card {
+    padding: var(--space-2xl);
+    max-width: 680px;
+  }
+
+  .quote-text {
+    font-size: 1.5rem;
+  }
+
+  .quote-author {
+    font-size: 1.0625rem;
+  }
+}

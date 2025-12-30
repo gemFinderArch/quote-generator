@@ -1,0 +1,78 @@
+.inspire-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-xl);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--bg-primary);
+  background: var(--gradient-accent);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+  min-width: 180px;
+}
+
+.inspire-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.inspire-button:hover:not(:disabled) {
+  box-shadow: 0 0 0 1px var(--accent-primary),
+              0 0 30px var(--glow-primary),
+              0 4px 20px rgba(139, 124, 247, 0.3);
+}
+
+.inspire-button:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.inspire-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.inspire-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.inspire-button.is-loading {
+  animation: glowPulse 1.5s ease-in-out infinite;
+}
+
+.button-content {
+  position: relative;
+  z-index: 1;
+}
+
+.button-icon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.inspire-button:hover:not(:disabled) .button-icon {
+  transform: translateX(4px);
+}
+
+@media (min-width: 640px) {
+  .inspire-button {
+    padding: var(--space-md) var(--space-2xl);
+    font-size: 1.0625rem;
+    min-width: 200px;
+  }
+}

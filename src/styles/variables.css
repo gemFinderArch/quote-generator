@@ -1,0 +1,62 @@
+:root {
+  /* Backgrounds - Near black with subtle depth */
+  --bg-void: #050507;
+  --bg-primary: #0a0a0f;
+  --bg-elevated: #12121a;
+  --bg-hover: #1a1a24;
+
+  /* Accent Colors - Muted, sophisticated */
+  --accent-primary: #8b7cf7;
+  --accent-secondary: #c4a7e7;
+  --accent-gold: #f5d9a8;
+
+  /* Text - High contrast but soft */
+  --text-primary: #f0f0f5;
+  --text-secondary: #9898a6;
+  --text-muted: #5a5a6e;
+
+  /* Glass/Surface Effects */
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-bg: rgba(18, 18, 26, 0.8);
+  --glow-primary: rgba(139, 124, 247, 0.15);
+  --glow-subtle: rgba(139, 124, 247, 0.08);
+
+  /* Gradients */
+  --gradient-subtle: linear-gradient(135deg,
+    rgba(139, 124, 247, 0.08) 0%,
+    rgba(196, 167, 231, 0.04) 100%);
+  --gradient-accent: linear-gradient(135deg,
+    var(--accent-primary) 0%,
+    var(--accent-secondary) 100%);
+  --gradient-gold: linear-gradient(135deg,
+    #f5d9a8 0%,
+    #e8c78b 100%);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 40px var(--glow-subtle);
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 200ms;
+  --duration-normal: 400ms;
+  --duration-slow: 800ms;
+}

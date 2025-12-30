@@ -1,0 +1,68 @@
+.background-effects {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: floatGentle 40s ease-in-out infinite;
+}
+
+.shape-1 {
+  width: 400px;
+  height: 400px;
+  background: var(--accent-primary);
+  top: -100px;
+  right: -100px;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 300px;
+  height: 300px;
+  background: var(--accent-secondary);
+  bottom: -50px;
+  left: -50px;
+  animation-delay: -13s;
+}
+
+.shape-3 {
+  width: 250px;
+  height: 250px;
+  background: var(--accent-gold);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.2;
+  animation-delay: -26s;
+}
+
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+}
+
+@media (max-width: 640px) {
+  .shape-1 {
+    width: 250px;
+    height: 250px;
+  }
+
+  .shape-2 {
+    width: 200px;
+    height: 200px;
+  }
+
+  .shape-3 {
+    display: none;
+  }
+}
