@@ -61,7 +61,6 @@ function App() {
         <section className="quote-section">
           <QuoteCard
             quote={currentQuote}
-            isAnimating={isAnimating}
             animationState={animationState}
           />
         </section>
